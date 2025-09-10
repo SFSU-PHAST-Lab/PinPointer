@@ -111,34 +111,42 @@ class DataReviewPage(QWidget):
         """ Read data from the results and display it in the table. 
         Args:
             file_path (string): Absolute path to the file to open """
-        with open(file_path, "r") as file:
-            data = [self.format_line(line) for line in file if not line.strip().startswith("=")]
-        
-        # Save data for exporting
-        self.data = pd.DataFrame(data, columns=[header.value for header in HEADERS])
+        try:
+            with open(file_path, "r") as file:
+                data = [self.format_line(line) for line in file if not line.strip().startswith("=")]
 
-        # Populate the table
-        self.data_table.setRowCount(len(data))
-        for row_idx, row_data in enumerate(data):
-            for col_idx, value in enumerate(row_data):
-                self.data_table.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
-        self.data_label.setText(f"Loaded data from: {file_path}")
+            # Save data for exporting
+            self.data = pd.DataFrame(data, columns=[header.value for header in HEADERS])
+
+            # Populate the table
+            self.data_table.setRowCount(len(data))
+            for row_idx, row_data in enumerate(data):
+                for col_idx, value in enumerate(row_data):
+                    self.data_table.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
+            self.data_label.setText(f"Loaded data from: {file_path}")
+
+        except IndexError as e:
+            self.data_label.setText(f"Encountered error: '{e}'. Results file may be malformed.")
     
     def format_line(self, line):
         """ Extracts the data from the given line
         Args:
             line (string): The data with values to extract """
         if line.startswith(HEADERS.IMAGE_ID.value):
-            id = line.split(HEADERS.IMAGE_ID.value)[1].split()[0]
-            name = line.split(HEADERS.IMAGE_NAME.value)[1].split()[0]
-            radial = line.split(HEADERS.RADIAL.value)[1].split()[0]
-            x_axis = line.split(HEADERS.X_AXIS.value)[1].split()[0]
-            y_axis = line.split(HEADERS.Y_AXIS.value)[1].split()[0]
+            try:
+                id = line.split(HEADERS.IMAGE_ID.value)[1].split()[0]
+                # name = line.split(HEADERS.IMAGE_NAME.value)[1].split()[0]
+                name = line[line.find(HEADERS.IMAGE_NAME.value)+len(HEADERS.IMAGE_NAME.value) : line.rfind(HEADERS.RADIAL.value)].strip()
+                radial = line.split(HEADERS.RADIAL.value)[1].split()[0]
+                x_axis = line.split(HEADERS.X_AXIS.value)[1].split()[0]
+                y_axis = line.split(HEADERS.Y_AXIS.value)[1].split()[0]
 
-            if all(data == "N/A" for data in (radial, x_axis, y_axis)):
-                return [str(id), str(name), str(radial), str(x_axis), str(y_axis)]
-            else:
-                return [str(id), str(name), float(radial), float(x_axis), float(y_axis)]
+                if all(data == "N/A" for data in (radial, x_axis, y_axis)):
+                    return [str(id), str(name), str(radial), str(x_axis), str(y_axis)]
+                else:
+                    return [str(id), str(name), float(radial), float(x_axis), float(y_axis)]
+            except IndexError as e:
+                raise e
 
     def show_statistics(self):
         """ Display enhanced statistics such as mean, median, standard deviation, and 

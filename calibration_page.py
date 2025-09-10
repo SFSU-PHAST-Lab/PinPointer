@@ -54,7 +54,7 @@ class CalibrationPage(QWidget):
         self.button_layout = QHBoxLayout()
 
         # Load image information
-        self.axis_image_folder = os.path.join(os.getcwd(), AXIS_ORIENTATION_DIR)
+        self.axis_image_folder = os.path.join(os.path.dirname(__file__), AXIS_ORIENTATION_DIR)
         self.axis_image_files = sorted(os.listdir(self.axis_image_folder))
         self.axis_orientation = 0  # Start at the first image
 
@@ -128,16 +128,32 @@ class CalibrationPage(QWidget):
         # Distance Input Section
         #####################################################
 
+        # Create a horizontal layout for the distance input and submit button
+        distance_layout = QHBoxLayout()
+
         # Distance input field
         self.distance_input = QLineEdit()
         self.distance_input.setPlaceholderText(
             "Enter real-world distance between points (e.g., 10)")
         self.distance_input.setStyleSheet(f"font-size: {FONT_SIZE}")
-        self.distance_input.setEnabled(False)  # Enable after selecting two points
+        # self.distance_input.setEnabled(False)  # Enable after selecting two points
         self.distance_input.installEventFilter(self)  # Enable Enter key press event
-        self.layout.addWidget(self.distance_input)
+        # self.layout.addWidget(self.distance_input)
         self.distance_input.returnPressed.connect(self.load_edit_page)
-        self.distance_input.hide()  # Initially hidden
+        # self.distance_input.hide()  # Initially hidden
+
+        # Start button
+        self.start_button = QPushButton("Start")
+        self.start_button.clicked.connect(self.load_edit_page)
+        self.start_button.hide()
+
+        # Add the elements to the layout
+        distance_layout.addWidget(self.distance_input)
+        distance_layout.addWidget(self.start_button)
+
+        self.layout.addLayout(distance_layout)
+
+        self.hide_distance_calibration()
         
         #####################################################
         # Image Viewer for Point Selection
@@ -164,6 +180,19 @@ class CalibrationPage(QWidget):
         self.image_label.show()
         self.left_button.show()
         self.right_button.show()
+
+    def hide_distance_calibration(self):
+        """ Hides the distance text box and start button. """
+        self.distance_input.setVisible(False) # Show the distance input field
+        self.distance_input.setEnabled(False) # Enable the distance input field  
+        self.distance_input.hide()
+        self.start_button.hide()
+
+    def show_distance_calibration(self):
+        self.distance_input.setVisible(True) # Show the distance input field
+        self.distance_input.setEnabled(True) # Enable the distance input field  
+        self.distance_input.show()
+        self.start_button.show()
 
     def load_axis_image(self):
         """ Loads the current axis image based on the current index. """
@@ -209,7 +238,11 @@ class CalibrationPage(QWidget):
             with the distance entered, pixel distance, and scaling factor.
         """
         # Get and validate the entered distance
-        distance = float(self.distance_input.text())
+        try:
+            distance = float(self.distance_input.text())
+        except:
+            QMessageBox.warning(self, "Invalid Input", "Could not interpret distance as a number.")
+            return
 
         if distance <= 0:
             QMessageBox.warning(self, "Invalid Input", "Distance must be a positive number.")
@@ -271,8 +304,9 @@ class CalibrationPage(QWidget):
                 self.direction_label.setText("Please select the orientation of the axes,\n" "and actual distance between the two selected points.\n" "Press 'Enter' to continue.")
                 # Show the graph images
                 self.show_graph_and_buttons()
-                self.distance_input.setVisible(True) # Show the distance input field
-                self.distance_input.setEnabled(True) # Enable the distance input field  
+                self.show_distance_calibration()
+                # self.distance_input.setVisible(True) # Show the distance input field
+                # self.distance_input.setEnabled(True) # Enable the distance input field  
 
     def select_folder(self):
         """ Opens a dialog to select a folder containing images.

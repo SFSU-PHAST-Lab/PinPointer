@@ -11,7 +11,7 @@
 from PyQt5.QtCore import Qt
 from enum import Enum
 
-PROGRAM_NAME = "Motor Skill Acquisition Error Management System"
+PROGRAM_NAME = "PinPointer"
 
 # File and folder names
 AXIS_ORIENTATION_DIR = "axisOrientationGraphics"

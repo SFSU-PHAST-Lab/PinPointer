@@ -202,7 +202,7 @@ class EditPage(QWidget):
         # Subtract 1 to get values for the previous image
         img = self.images[self.current_idx-1]
         # Add 1 to current_idx to make the values 1 indexed
-        return f"On Trial [{self.current_idx+1}] out of [{self.num_images}] || Previous Trial Values: || {HEADERS.RADIAL.value}: {img.radial} | {HEADERS.X_AXIS.value}: {img.xaxis} | {HEADERS.Y_AXIS.value}: {img.yaxis}"
+        return f"On Trial [{self.current_idx+1}] out of [{self.num_images}] || Previous Trial Values: {HEADERS.RADIAL.value}: {img.radial} | {HEADERS.X_AXIS.value}: {img.xaxis} | {HEADERS.Y_AXIS.value}: {img.yaxis}"
 
     def end_editing(self):
         """ Clean up the window at the end of the editing session. """
