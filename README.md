@@ -5,6 +5,8 @@ the error (x-axis, y-axis, and radial error distances) between an object and tar
 and hole). PinPointer automatically calculates statistical measures for each error type which can be exported for 
 additional analysis.
 
+Please see the Releases tab to the right for the most recent Windows and MacOS executables.
+
 ## Copyright Information
 
 Copyright 2025 SFSU PHAST Lab
