@@ -1,5 +1,5 @@
 #############################################################################################################
-# Project Name: Motor Skill Acquisition Error Management System
+# Project Name: PinPointer
 # 
 # Filename: data_review_page.py
 # 
