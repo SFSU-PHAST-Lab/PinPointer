@@ -1,5 +1,5 @@
 ############################################################################################
-# Project Name: Motor Skill Acquisition Error Management System 
+# Project Name: PinPointer
 # 
 # Filename: file_manager_class.py
 # 
