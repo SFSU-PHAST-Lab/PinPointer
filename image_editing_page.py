@@ -9,10 +9,21 @@
 # File Description:
 # This file contains the code for the image editing page, where users can select points on images
 # to calculate real-world measurements. The EditPage class allows users to select a target point
-# and an implement point on the image to calculate the z-axis, y-axis, and x-axis values. The calculated
-# values are displayed on the screen and saved to a text file. The page also provides navigation
-# options to move between images and return to the main menu. At the end of the image list, users
-# can choose to go to the data review page, return to the main menu, or exit the program.
+# and an implement point on the image to calculate the z-axis, y-axis, and x-axis values. The 
+# calculated values are displayed on the screen and saved to a text file. The page also provides 
+# navigation options to move between images and return to the main menu. At the end of the image
+# list, users can choose to go to the data review page, return to the main menu, or exit the program.
+#  
+# Copyright 2025 SFSU PHAST Lab
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#        http://www.apache.org/licenses/LICENSE-2.0
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
 ############################################################################################
 
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
