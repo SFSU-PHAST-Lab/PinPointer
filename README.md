@@ -7,6 +7,19 @@ additional analysis.
 
 Please see the Releases tab to the right for the most recent Windows and MacOS executables.
 
+For more details, or if you use PinPointer in your work, please reference \[1\].
+
+\[1\] TODO once published
+
+## How measures are calculated
+
+PinPointer calculates a _scaling factor_, or the linear transformation of the distance between two points in an image (e.g., the target and implement) and their real-world distance. For each image, PinPointer calculates the error along the x-axis ($\Delta x$), error along the y-axis ($\Delta y$), and radial error using the following formulas:
+
+$$scaling\ factor = \frac{dist_{real\ world}}{dist_{image}}$$
+$$ \Delta x = (x_{target} - x_{implement}) \dot (scaling\ factor) $$
+$$ \Delta y = (y_{target} - y_{implement}) \dot (scaling\ factor) $$
+$$ Radial\ Error = \sqrt{\Delta x^2 + \Delta y^2} $$
+
 ## Copyright Information
 
 Copyright 2025 SFSU PHAST Lab
