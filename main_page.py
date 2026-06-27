@@ -67,10 +67,13 @@ class MainWindow(QMainWindow):
     def nav_to_main_menu(self):
         """ Navigate to the main menu. """
         self.stack.setCurrentWidget(self.main_menu) 
+        # Clear the calibration page data
+        self.calibration_page.on_exit()
 
     def nav_to_calibration_page(self):
         """ Navigate to the calibration page. """
         self.stack.setCurrentWidget(self.calibration_page)
+        self.calibration_page.on_enter()
 
     def nav_to_edit_page(self):
         """ Navigate to the image editing page. """

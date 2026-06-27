@@ -58,32 +58,26 @@ class CalibrationPage(QWidget):
         self.axis_image_files = sorted(os.listdir(self.axis_image_folder))
         self.axis_orientation = 0  # Start at the first image
 
-        # Direction label
-        self.direction_label = QLabel(
-            "Please select a folder with image set, then select a calibration image.") 
-        self.direction_label.setAlignment(Qt.AlignCenter)
-        self.direction_label.setStyleSheet(STYLE_SHEET)
-        self.layout.addWidget(self.direction_label)
+        # Calibration label
+        self.calibration_label = QLabel(
+            "Please select the calibration image.\n" \
+            "This should be in the folder with the images you would like to process.") 
+        self.calibration_label.setAlignment(Qt.AlignCenter)
+        self.calibration_label.setStyleSheet(STYLE_SHEET)
+        self.layout.addWidget(self.calibration_label)
 
         # Back to main menu button
         self.main_menu_button = QPushButton("Return to Main Menu")
         self.main_menu_button.clicked.connect(self.parent.nav_to_main_menu)
         self.button_layout.addWidget(self.main_menu_button)
 
-        # Folder selection button
-        self.select_folder_button = QPushButton("Select Folder")
-        self.select_folder_button.clicked.connect(self.select_folder)
-        self.button_layout.addWidget(self.select_folder_button)
-
         # Image selection button
-        self.select_image_button = QPushButton("Reselect Image")
-        self.select_image_button.setEnabled(False)
+        self.select_image_button = QPushButton("Reselect Calibration Image")
         self.select_image_button.clicked.connect(self.select_cal_image)
         self.button_layout.addWidget(self.select_image_button)
-        self.select_image_button.hide()
 
         # Reselect points button
-        self.reselect_points_button = QPushButton("Reselect Points")
+        self.reselect_points_button = QPushButton("Reselect Calibration Points")
         self.reselect_points_button.setEnabled(False)
         self.reselect_points_button.clicked.connect(self.reselect_points)
         self.button_layout.addWidget(self.reselect_points_button)
@@ -136,11 +130,8 @@ class CalibrationPage(QWidget):
         self.distance_input.setPlaceholderText(
             "Enter real-world distance between points (e.g., 10)")
         self.distance_input.setStyleSheet(f"font-size: {FONT_SIZE}")
-        # self.distance_input.setEnabled(False)  # Enable after selecting two points
         self.distance_input.installEventFilter(self)  # Enable Enter key press event
-        # self.layout.addWidget(self.distance_input)
         self.distance_input.returnPressed.connect(self.load_edit_page)
-        # self.distance_input.hide()  # Initially hidden
 
         # Start button
         self.start_button = QPushButton("Start")
@@ -271,7 +262,7 @@ class CalibrationPage(QWidget):
         self.hide_graph_and_buttons()
         self.point1, self.point2 = None, None   # Reset the selected points
         self.reselect_points_button.setEnabled(False) # Disable the button
-        self.direction_label.setText("Please select new two points to set the distance")
+        self.calibration_label.setText("Please select new two points to set the distance")
         self.image_viewer.load_image(self.cal_image_path) # Reload the image
         
     def handle_point_clicked(self, x, y):
@@ -301,42 +292,42 @@ class CalibrationPage(QWidget):
                 self.reselect_points_button.setVisible(True) 
                 self.reselect_points_button.setEnabled(True) 
                 # Prompt the user to select the axes orientation
-                self.direction_label.setText("Please select the orientation of the axes,\n" "and actual distance between the two selected points.\n" "Press 'Enter' to continue.")
+                self.calibration_label.setText("Please select the orientation of the axes,\n" "and actual distance between the two selected points.\n" "Press 'Enter' to continue.")
                 # Show the graph images
                 self.show_graph_and_buttons()
                 self.show_distance_calibration()
-                # self.distance_input.setVisible(True) # Show the distance input field
-                # self.distance_input.setEnabled(True) # Enable the distance input field  
 
-    def select_folder(self):
-        """ Opens a dialog to select a folder containing images.
-            It updates the folder path label and enables the select image button.
+    def on_enter(self):
+        """ Prompts the user to select a folder and calibration image.
+            Runs whenever we enter this page. 
         """
-        # Open a dialog to select a folder
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder")
-        if folder_path:
-            self.folder_path = folder_path # Store the selected folder path
-            self.select_image_button.setEnabled(True) # Enable the select image button
-            self.select_image_button.setVisible(True) # Show the select image button
-            self.select_cal_image() # Select the calibration image
+        self.select_cal_image() # Select the calibration image
 
+    def on_exit(self):
+        """ Resets the values back to default.
+            Runs whenever we exit this page.
+        """
+        self.folder_path = None 
+        self.point1, self.point2 = None, None 
+        self.calibration_label.setText(
+            "Please select the calibration image.\n" \
+            "This should be in the folder with the images you would like to process.")
+        self.image_viewer.clear_screen()
     
     def select_cal_image(self):
-        """ This method opens a dialog to select a calibration image from the selected 
-            folder. It loads the selected image in the image viewer and prompts the 
+        """ This method opens a dialog to select a calibration image. 
+            It loads the selected image in the image viewer and prompts the 
             user to select two points to set the distance.
         """
         self.point1, self.point2 = None, None
 
-        if not self.folder_path:
-            return
         # Open a dialog to select an image from the selected folder
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         image_path, _ = QFileDialog.getOpenFileName(
             self,
             "Select Image",
-            self.folder_path,
+            "", # Directory is the one the script is in
             f"Images (*.{' *.'.join(IMAGE_TYPES)})",
             options=options
         )
@@ -344,10 +335,10 @@ class CalibrationPage(QWidget):
         if image_path:
             # Store the selected image path
             self.cal_image_path = image_path 
+            # Store the folder the image is stored in
+            self.folder_path = os.path.dirname(image_path)
             # Load the selected image in the image viewer
             self.image_viewer.load_image(image_path) 
             # Prompt the user to select two points
-            self.direction_label.setText("Please select two points to set the distance") 
-            # Change the text of the select folder button
-            self.select_folder_button.setText("Reselect Folder")
+            self.calibration_label.setText("{}\nPlease select two points to set the distance".format(self.folder_path)) 
 

@@ -272,7 +272,7 @@ class EditPage(QWidget):
             self.image_files.remove(normalized_image_path)
 
         # Create a list of Images for each image in the file list
-        self.images = [Image(os.path.basename(file), file, idx) for idx, file in enumerate(self.image_files)]
+        self.images = [Image(os.path.basename(file), file, idx+1) for idx, file in enumerate(self.image_files)]
         self.num_images = len(self.images)
 
     def set_data(self, scaling_factor, folder_path, image_path, axis_orientation):

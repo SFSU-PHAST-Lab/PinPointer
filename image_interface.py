@@ -58,6 +58,10 @@ class ImageView(QGraphicsView):
         self.image_selected = True # Set the flag to indicate that an image is loaded
         self.fitInView(self.image_item, Qt.KeepAspectRatio) # Fit the image to the view
 
+    def clear_screen(self):
+        """ Clear the current image from the screen. """
+        self.scene.clear()
+
     def mousePressEvent(self, event):
         """ Handle mouse press events on the image view. When the left mouse button is 
             clicked, emit a signal with the coordinates of the clicked point. 
