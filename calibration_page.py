@@ -34,7 +34,7 @@ from PyQt5.QtWidgets import (QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
 import calculations as calc
 from image_interface import ImageView
 
-from constants import AXIS_ORIENTATION_DIR, FONT_SIZE, STYLE_SHEET, IMAGE_TYPES
+from constants import AXIS_ORIENTATION_DIR, FONT_SIZE, STYLE_SHEET, IMAGE_TYPES, resource_path
 
 class CalibrationPage(QWidget):
     """ 
@@ -65,7 +65,7 @@ class CalibrationPage(QWidget):
         self.button_layout = QHBoxLayout()
 
         # Load image information
-        self.axis_image_folder = os.path.join(os.path.dirname(__file__), AXIS_ORIENTATION_DIR)
+        self.axis_image_folder = resource_path(AXIS_ORIENTATION_DIR)
         self.axis_image_files = sorted(os.listdir(self.axis_image_folder))
         self.axis_orientation = 0  # Start at the first image
 

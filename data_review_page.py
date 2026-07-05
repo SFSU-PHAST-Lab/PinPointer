@@ -147,7 +147,6 @@ class DataReviewPage(QWidget):
         if line.startswith(HEADERS.IMAGE_ID.value):
             try:
                 id = line.split(HEADERS.IMAGE_ID.value)[1].split()[0]
-                # name = line.split(HEADERS.IMAGE_NAME.value)[1].split()[0]
                 name = line[line.find(HEADERS.IMAGE_NAME.value)+len(HEADERS.IMAGE_NAME.value) : line.rfind(HEADERS.RADIAL.value)].strip()
                 radial = line.split(HEADERS.RADIAL.value)[1].split()[0]
                 x_axis = line.split(HEADERS.X_AXIS.value)[1].split()[0]

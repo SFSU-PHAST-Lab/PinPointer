@@ -22,6 +22,9 @@
 from PyQt5.QtCore import Qt
 from enum import Enum
 
+import sys
+from pathlib import Path
+
 PROGRAM_NAME = "PinPointer"
 
 # File and folder names
@@ -65,3 +68,10 @@ class HEADERS(Enum):
 # Default Values
 OUT_OF_BOUNDS = 99999
 NO_IMAGE = "N/A"
+
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        base_path = Path(sys._MEIPASS)
+    else:
+        base_path = Path(__file__).parent
+    return base_path / relative_path
