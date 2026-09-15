@@ -9,7 +9,7 @@ Please see the Releases tab to the right for the most recent Windows and MacOS e
 
 For more details, or if you use PinPointer in your work, please reference \[1\].
 
-\[1\] TODO once published
+\[1\] Marin, M. E., Cabrera, M. B., Samson, J. R., Parma, J. O., & Kubota, A. (2026). PinPointer: An offline error measurement system for motor behavior research. Behavior Research Methods, 58(9), 262.
 
 ## How measures are calculated
 
