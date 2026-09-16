@@ -20,6 +20,15 @@ $$ \Delta x = (x_{target} - x_{implement}) \dot (scaling\ factor) $$
 $$ \Delta y = (y_{target} - y_{implement}) \dot (scaling\ factor) $$
 $$ Radial\ Error = \sqrt{\Delta x^2 + \Delta y^2} $$
 
+### Note for MacOS Users
+
+By default, the file PinPointer_MacOS will not be executable when initially downloaded. This can be resolved by changing the permissions of the file to allow it to be executed. To do so, you can follow these steps:
+
+1. Open a Terminal application window.
+2. Navigate to the folder where the executable file was downloaded (e.g., `cd ~/Downloads`)
+3. Once you are in the correct folder, you can change the permissions of the file using the chmod command, e.g., `chmod +x PinPointer_MacOS`
+4. You should now be able to double click on the file icon in the Finder window, or execute the file directly in the Terminal (e.g. `./PinPointer_MacOS`)
+
 ## Copyright Information
 
 Copyright 2025 SFSU PHAST Lab
